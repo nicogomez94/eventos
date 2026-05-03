@@ -11,6 +11,38 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <!-- ===== MOBILE HEADER (≤600px) ===== -->
+    <header class="mobile-header" id="mobile-header">
+        <a href="#inicio" class="mobile-logo">
+            <div class="mobile-logo-oval"><span class="mobile-logo-letter">E</span></div>
+            <span class="mobile-logo-brand">EVENTOS</span>
+        </a>
+        <div class="mobile-header-right">
+            <div class="cart-wrap">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">0</span>
+            </div>
+            <button class="hamburger" id="hamburger-btn" aria-label="Menú" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile nav drawer -->
+    <nav class="mobile-drawer" id="mobile-drawer">
+        <a href="#inicio" class="nav-item mobile-drawer-item">INICIO</a>
+        <a href="#" class="nav-item mobile-drawer-item active">REMERAS</a>
+        <a href="#" class="nav-item mobile-drawer-item">BUZOS</a>
+        <a href="#" class="nav-item mobile-drawer-item">MERCHANDISE</a>
+        <a href="#" class="nav-item mobile-drawer-item">OTROS</a>
+        <a href="admin.html" class="mobile-drawer-item mobile-drawer-admin" target="_blank">
+            <i class="fas fa-chart-bar"></i> Panel Admin
+        </a>
+    </nav>
+
     <div class="page-wrapper" id="inicio">
 
         <!-- ===== SIDEBAR ===== -->

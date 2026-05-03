@@ -185,10 +185,21 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', function (e) {
             e.preventDefault();
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            this.classList.add('active');
-
             const label = this.textContent.trim().toUpperCase();
+            // Sync active state across sidebar + mobile drawer
+            document.querySelectorAll('.nav-item').forEach(n => {
+                n.classList.toggle('active', n.textContent.trim().toUpperCase() === label);
+            });
+
+            // Close mobile drawer if open
+            const drawer  = document.getElementById('mobile-drawer');
+            const hambBtn = document.getElementById('hamburger-btn');
+            if (drawer && drawer.classList.contains('open')) {
+                drawer.classList.remove('open');
+                hambBtn.classList.remove('active');
+                hambBtn.setAttribute('aria-expanded', 'false');
+            }
+
             if (DESIGNER_ITEMS[label]) {
                 openDesigner(DESIGNER_ITEMS[label], label);
             } else {
@@ -403,6 +414,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Hide hint initially
     garmentHint.style.opacity = '0';
+
+    // -------------------------------------------------------
+    //  Hamburger menu (mobile)
+    // -------------------------------------------------------
+    const hamburgerBtn  = document.getElementById('hamburger-btn');
+    const mobileDrawer  = document.getElementById('mobile-drawer');
+
+    if (hamburgerBtn && mobileDrawer) {
+        hamburgerBtn.addEventListener('click', () => {
+            const isOpen = mobileDrawer.classList.toggle('open');
+            hamburgerBtn.classList.toggle('active', isOpen);
+            hamburgerBtn.setAttribute('aria-expanded', String(isOpen));
+        });
+
+        // Close on outside click
+        document.addEventListener('click', (e) => {
+            if (
+                mobileDrawer.classList.contains('open') &&
+                !mobileDrawer.contains(e.target) &&
+                !hamburgerBtn.contains(e.target)
+            ) {
+                mobileDrawer.classList.remove('open');
+                hamburgerBtn.classList.remove('active');
+                hamburgerBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
 
     // -------------------------------------------------------
     //  Checkout modal

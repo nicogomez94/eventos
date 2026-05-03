@@ -1497,6 +1497,324 @@ footer {
 .notes-icon[title]:hover { color: var(--gold); }
 
 /* ========================================
+   MOBILE HEADER (hidden on desktop)
+   ======================================== */
+.mobile-header {
+    display: none;
+}
+
+.mobile-drawer {
+    display: none;
+}
+
+/* ========================================
+   RESPONSIVE — ≤ 600px
+   ======================================== */
+@media (max-width: 600px) {
+
+    /* --- Mobile header --- */
+    .mobile-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        height: 56px;
+        background: var(--bg-dark);
+        border-bottom: 1px solid #222;
+        padding: 0 16px;
+        z-index: 300;
+    }
+
+    .mobile-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+    }
+
+    .mobile-logo-oval {
+        width: 34px;
+        height: 38px;
+        border: 2px solid var(--gold);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .mobile-logo-letter {
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        font-style: italic;
+        font-weight: 600;
+        font-size: 22px;
+        color: var(--gold);
+        line-height: 1;
+    }
+
+    .mobile-logo-brand {
+        font-size: 11px;
+        letter-spacing: 4px;
+        font-weight: 700;
+        color: var(--text);
+        text-transform: uppercase;
+    }
+
+    .mobile-header-right {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+    /* Hamburger button */
+    .hamburger {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        width: 32px;
+        height: 32px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+        flex-shrink: 0;
+    }
+
+    .hamburger span {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: var(--text);
+        border-radius: 1px;
+        transition: transform 0.3s ease, opacity 0.3s ease, background 0.2s;
+        transform-origin: center;
+    }
+
+    .hamburger.active span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+        background: var(--gold);
+    }
+
+    .hamburger.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+        background: var(--gold);
+    }
+
+    /* Mobile nav drawer */
+    .mobile-drawer {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 56px; left: 0; right: 0;
+        background: var(--bg-dark);
+        z-index: 299;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.38s ease, box-shadow 0.3s;
+        border-bottom: 1px solid transparent;
+    }
+
+    .mobile-drawer.open {
+        max-height: 420px;
+        box-shadow: 0 12px 32px rgba(0,0,0,0.6);
+        border-bottom-color: #222;
+    }
+
+    .mobile-drawer-item {
+        display: block;
+        text-decoration: none;
+        color: var(--text);
+        padding: 15px 24px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        border-bottom: 1px solid #1a1a1a;
+        transition: background 0.15s, color 0.15s;
+    }
+
+    .mobile-drawer-item.active {
+        color: var(--gold);
+        background: rgba(201, 160, 40, 0.07);
+        border-left: 3px solid var(--gold);
+        padding-left: 21px;
+    }
+
+    .mobile-drawer-item:hover:not(.active) {
+        background: #1a1a1a;
+    }
+
+    .mobile-drawer-admin {
+        color: #666;
+        font-size: 11px;
+        letter-spacing: 1.5px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 14px 24px;
+        border-bottom: none;
+    }
+
+    .mobile-drawer-admin:hover {
+        color: var(--gold);
+        background: #1a1a1a;
+    }
+
+    /* --- Hide desktop sidebar & top-bar --- */
+    .sidebar {
+        display: none !important;
+    }
+
+    .top-bar {
+        display: none;
+    }
+
+    /* --- Page layout --- */
+    .page-wrapper {
+        padding-top: 56px;
+    }
+
+    .content {
+        width: 100%;
+    }
+
+    /* --- Hero --- */
+    .hero-carousel {
+        height: 380px;
+    }
+
+    .hero-content {
+        padding: 0 22px;
+        max-width: 100%;
+        justify-content: flex-end;
+        padding-bottom: 52px;
+    }
+
+    .hero-eyebrow {
+        font-size: 9px;
+        letter-spacing: 3px;
+        margin-bottom: 10px;
+    }
+
+    .hero-title {
+        font-size: 30px;
+        margin-bottom: 12px;
+    }
+
+    .hero-sub {
+        font-size: 12px;
+        margin-bottom: 22px;
+    }
+
+    .hero-cta-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .hero-cta-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 12px 20px;
+    }
+
+    /* --- About --- */
+    .about-box {
+        margin: 0 0 40px;
+        padding: 32px 22px;
+        border-top: none;
+        border-left: 3px solid var(--gold);
+        text-align: left;
+    }
+
+    .about-title {
+        text-align: left;
+    }
+
+    /* --- Section titles --- */
+    .section-title {
+        font-size: 13px;
+        letter-spacing: 2px;
+        margin-bottom: 22px;
+    }
+
+    .section-title::after {
+        width: 28px;
+    }
+
+    /* --- Gallery --- */
+    .section-gallery {
+        padding: 40px 12px 32px;
+    }
+
+    .gallery-card {
+        flex: 0 0 calc(50% - 5px);
+    }
+
+    .gallery-card img {
+        height: 130px;
+    }
+
+    /* --- Products --- */
+    .section-products {
+        padding: 0 12px 48px;
+    }
+
+    .product-card {
+        flex: 0 0 calc(33.333% - 7px);
+    }
+
+    .product-card img {
+        height: 130px;
+    }
+
+    .arrow-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 18px;
+    }
+
+    /* --- Designer view on mobile --- */
+    .designer-body {
+        flex-direction: column;
+    }
+
+    .designer-preview-panel {
+        flex: none;
+        padding: 20px 16px 8px;
+        border-right: none;
+        border-bottom: 1px solid #1d1d1d;
+    }
+
+    .garment-stage {
+        width: 240px;
+    }
+
+    .designer-controls-panel {
+        padding: 20px 16px;
+    }
+
+    /* --- Checkout modal --- */
+    .modal-card {
+        padding: 20px 18px;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .form-group--sm {
+        flex: none;
+    }
+}
+
+/* ========================================
    SCROLL-REVEAL ANIMATIONS
    ======================================== */
 @keyframes revealUp {
