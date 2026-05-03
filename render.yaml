@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: eventos
+    runtime: static
+    buildCommand: "true"
+    staticPublishPath: .

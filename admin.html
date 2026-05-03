@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventos - Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page-wrapper">
+
+        <!-- ===== SIDEBAR ===== -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-oval">
+                    <span class="logo-letter">E</span>
+                </div>
+                <span class="logo-brand">EVENTOS</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item">REMERAS</a>
+                <a href="index.html" class="nav-item">BUZOS</a>
+                <a href="index.html" class="nav-item">MERCHANDISE</a>
+                <a href="index.html" class="nav-item">OTROS</a>
+            </nav>
+            <div class="nav-admin-wrap">
+                <a href="admin.html" class="nav-admin-link nav-admin-link--active">
+                    <i class="fas fa-chart-bar"></i> Panel Admin
+                </a>
+            </div>
+        </aside>
+
+        <!-- ===== MAIN CONTENT ===== -->
+        <div class="content">
+
+            <!-- Top Bar -->
+            <header class="top-bar" style="justify-content:space-between">
+                <div class="admin-breadcrumb">
+                    <a href="index.html" class="breadcrumb-link">
+                        <i class="fas fa-arrow-left"></i> Volver a la tienda
+                    </a>
+                </div>
+                <div class="top-icons">
+                    <i class="fas fa-bell" title="Notificaciones"></i>
+                    <i class="fas fa-user" title="Perfil"></i>
+                </div>
+            </header>
+
+            <!-- Admin header -->
+            <div class="admin-header">
+                <div>
+                    <h2 class="admin-page-title">PANEL DE ADMINISTRACIÓN</h2>
+                    <p class="admin-page-sub">Gestión de pedidos &middot; Eventos Premium</p>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-row" id="stats-row"></div>
+
+            <!-- Orders -->
+            <div class="orders-section">
+                <div class="orders-header">
+                    <h3 class="section-title" style="margin-bottom:0">PEDIDOS RECIENTES</h3>
+                    <div class="filter-tabs" id="filter-tabs">
+                        <button class="filter-tab active" data-filter="all">Todos</button>
+                        <button class="filter-tab" data-filter="pendiente">Pendiente</button>
+                        <button class="filter-tab" data-filter="en_proceso">En proceso</button>
+                        <button class="filter-tab" data-filter="enviado">Enviado</button>
+                        <button class="filter-tab" data-filter="entregado">Entregado</button>
+                    </div>
+                </div>
+
+                <div class="table-wrap">
+                    <table class="orders-table" id="orders-table">
+                        <thead>
+                            <tr>
+                                <th>PEDIDO</th>
+                                <th>FECHA</th>
+                                <th>CLIENTE</th>
+                                <th>PRODUCTO</th>
+                                <th>TALLE</th>
+                                <th>CANT.</th>
+                                <th>COLOR</th>
+                                <th>TOTAL</th>
+                                <th>ESTADO</th>
+                                <th>CAMBIAR ESTADO</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-links">
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+            <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================================
+        //  Fake seed data (historical orders)
+        // ============================================================
+        const FAKE_ORDERS = [
+            {
+                id: 'EVT-0006', date: '2026-05-01',
+                customer: 'Nicolás Pérez', email: 'nico.perez@gmail.com',
+                product: 'Buzo', colorHex: '#3b1f5e', colorName: 'Violeta',
+                size: 'L', qty: 4, notes: 'Logo en el pecho, sin capucha si es posible',
+                status: 'pendiente', total: 16800
+            },
+            {
+                id: 'EVT-0005', date: '2026-04-28',
+                customer: 'Camila Torres', email: 'camila.t@outlook.com',
+                product: 'Remera', colorHex: '#7c0a02', colorName: 'Rojo oscuro',
+                size: 'M', qty: 10, notes: 'Para festival de música — diseño en serigrafía',
+                status: 'pendiente', total: 24000
+            },
+            {
+                id: 'EVT-0004', date: '2026-04-25',
+                customer: 'Santiago López', email: 'slopez@empresa.com',
+                product: 'Buzo', colorHex: '#4a4a4a', colorName: 'Gris',
+                size: 'XL', qty: 1, notes: '',
+                status: 'en_proceso', total: 4200
+            },
+            {
+                id: 'EVT-0003', date: '2026-04-22',
+                customer: 'Valentina Cruz', email: 'vale.cruz@gmail.com',
+                product: 'Remera', colorHex: '#ffffff', colorName: 'Blanco',
+                size: 'S', qty: 5, notes: 'Diseño minimalista, sin texto',
+                status: 'en_proceso', total: 12000
+            },
+            {
+                id: 'EVT-0002', date: '2026-04-18',
+                customer: 'Mateo Álvarez', email: 'malvarez@hotmail.com',
+                product: 'Buzo', colorHex: '#2a2a2a', colorName: 'Negro',
+                size: 'M', qty: 2, notes: '',
+                status: 'enviado', total: 8400
+            },
+            {
+                id: 'EVT-0001', date: '2026-04-15',
+                customer: 'Lucía Romero', email: 'lucia.r@gmail.com',
+                product: 'Remera', colorHex: '#1a3a5c', colorName: 'Azul marino',
+                size: 'L', qty: 3, notes: 'Bordar nombre en el cuello',
+                status: 'entregado', total: 7200
+            },
+        ];
+
+        // ============================================================
+        //  Status config
+        // ============================================================
+        const STATUS_CFG = {
+            pendiente:  { label: 'Pendiente',  color: '#c9a028' },
+            en_proceso: { label: 'En proceso', color: '#2196f3' },
+            enviado:    { label: 'Enviado',    color: '#9c27b0' },
+            entregado:  { label: 'Entregado',  color: '#4caf50' },
+        };
+
+        // ============================================================
+        //  Helpers
+        // ============================================================
+        function getOrders() {
+            const stored   = JSON.parse(localStorage.getItem('eventos_orders') || '[]');
+            const storedIds = new Set(stored.map(o => o.id));
+            // Real/new orders first, then fake seed orders not overridden
+            return [...stored, ...FAKE_ORDERS.filter(f => !storedIds.has(f.id))];
+        }
+
+        function updateOrderStatus(id, newStatus) {
+            let stored = JSON.parse(localStorage.getItem('eventos_orders') || '[]');
+            const idx  = stored.findIndex(o => o.id === id);
+            if (idx >= 0) {
+                stored[idx].status = newStatus;
+            } else {
+                // First time a fake order is modified — copy it into localStorage
+                const fake = FAKE_ORDERS.find(f => f.id === id);
+                if (fake) stored.push({ ...fake, status: newStatus });
+            }
+            localStorage.setItem('eventos_orders', JSON.stringify(stored));
+        }
+
+        function formatDate(d) {
+            const [y, m, day] = d.split('-');
+            return `${day}/${m}/${y}`;
+        }
+
+        function formatMoney(n) {
+            return '$' + n.toLocaleString('es-AR');
+        }
+
+        // ============================================================
+        //  Render
+        // ============================================================
+        let currentFilter = 'all';
+
+        function renderStats(orders) {
+            const total     = orders.length;
+            const pending   = orders.filter(o => o.status === 'pendiente').length;
+            const inProcess = orders.filter(o => o.status === 'en_proceso').length;
+            const revenue   = orders.reduce((s, o) => s + o.total, 0);
+
+            document.getElementById('stats-row').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-clipboard-list"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-value">${total}</div>
+                        <div class="stat-label">Total pedidos</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon--yellow"><i class="fas fa-clock"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-value">${pending}</div>
+                        <div class="stat-label">Pendientes</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon--blue"><i class="fas fa-cog"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-value">${inProcess}</div>
+                        <div class="stat-label">En proceso</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon--green"><i class="fas fa-dollar-sign"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-value">${formatMoney(revenue)}</div>
+                        <div class="stat-label">Ingresos totales</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderTable(orders) {
+            const filtered = currentFilter === 'all'
+                ? orders
+                : orders.filter(o => o.status === currentFilter);
+
+            const tbody = document.getElementById('orders-tbody');
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="10" class="table-empty">No hay pedidos con este estado.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(o => {
+                const s = STATUS_CFG[o.status] || STATUS_CFG.pendiente;
+                const dotBorder = o.colorHex === '#ffffff' ? 'border:1px solid #bbb;' : '';
+                const notesCell = o.notes
+                    ? `<i class="fas fa-comment-alt notes-icon" title="${o.notes.replace(/"/g, '&quot;')}"></i>`
+                    : '—';
+                return `
+                    <tr>
+                        <td class="order-id">${o.id}</td>
+                        <td class="order-date">${formatDate(o.date)}</td>
+                        <td>
+                            <div class="customer-name">${o.customer}</div>
+                            <div class="customer-email">${o.email}</div>
+                        </td>
+                        <td>${o.product}</td>
+                        <td class="order-size">${o.size}</td>
+                        <td class="order-qty">${o.qty}</td>
+                        <td>
+                            <div class="color-cell">
+                                <span class="color-dot-sm" style="background:${o.colorHex};${dotBorder}"></span>
+                                ${o.colorName}
+                            </div>
+                        </td>
+                        <td class="order-total">${formatMoney(o.total)}</td>
+                        <td>
+                            <span class="status-badge"
+                                style="background:${s.color}22;color:${s.color};border-color:${s.color}44">
+                                ${s.label}
+                            </span>
+                        </td>
+                        <td>
+                            <select class="status-select" data-id="${o.id}">
+                                <option value="pendiente"  ${o.status === 'pendiente'  ? 'selected' : ''}>Pendiente</option>
+                                <option value="en_proceso" ${o.status === 'en_proceso' ? 'selected' : ''}>En proceso</option>
+                                <option value="enviado"    ${o.status === 'enviado'    ? 'selected' : ''}>Enviado</option>
+                                <option value="entregado"  ${o.status === 'entregado'  ? 'selected' : ''}>Entregado</option>
+                            </select>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // ============================================================
+        //  Init
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            let orders = getOrders();
+            renderStats(orders);
+            renderTable(orders);
+
+            // Filter tabs
+            document.querySelectorAll('.filter-tab').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilter = this.dataset.filter;
+                    renderTable(getOrders());
+                });
+            });
+
+            // Status change via event delegation
+            document.getElementById('orders-tbody').addEventListener('change', (e) => {
+                if (!e.target.classList.contains('status-select')) return;
+                const id        = e.target.dataset.id;
+                const newStatus = e.target.value;
+                updateOrderStatus(id, newStatus);
+                const updated = getOrders();
+                renderStats(updated);
+                renderTable(updated);
+            });
+        });
+    </script>
+</body>
+</html>
